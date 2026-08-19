@@ -109,28 +109,3 @@ export const logoutUser = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-export const currentUser = async (req, res) => {
-  try {
-    const userID = req.userId;
-
-    const currentUser = await User.findById(userID);
-
-    if (!currentUser) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
-
-    return res.status(200).json({
-      message: "Current user fetched successfully",
-      user: currentUser,
-    });
-  } catch (error) {
-    console.error("CurrentUser controller Error", error);
-
-    return res.status(500).json({
-      message: "Internal Server Error",
-    });
-  }
-};
