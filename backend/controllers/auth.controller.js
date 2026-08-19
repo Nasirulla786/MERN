@@ -68,7 +68,7 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Require all fields" });
     }
 
-    const alreadyEmail = await User.findOne({ email });
+    const alreadyEmail = await User.findOne({ email }).select("+password");
     if (!alreadyEmail) {
       return res.status(400).json({ message: "Email does not exist" });
     }

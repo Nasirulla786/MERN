@@ -1,8 +1,22 @@
 import React from 'react'
+import RoutingProvider from './services/routingProvider'
+import { Toaster } from 'react-hot-toast'
+
+export const ServerURl = "http://localhost:3000"
 
 const App = () => {
+
   return (
-    <div className='text-red-500'>App</div>
+    <>
+    <RoutingProvider />
+    <Toaster
+    position='top-right'
+    reverseOrder={false}
+    />
+
+    </>
+
+
   )
 }
 
