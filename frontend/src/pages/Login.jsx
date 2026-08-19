@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { ServerURl } from "../App";
+import { setUserData } from "../redux/slices/userSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +16,7 @@ const Login = () => {
   const [focusField, setFocusField] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +32,7 @@ const Login = () => {
       );
 
       if (res.status == 200) {
+        dispatch(setUserData(res.data.user));
         toast.success(res.data.message);
         navigate("/");
       } else {

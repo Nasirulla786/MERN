@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { ServerURl } from "../App";
 import {Link , useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { setUserData } from "../redux/slices/userSlice";
+import { useDispatch } from "react-redux";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -13,6 +15,7 @@ const Register = () => {
   const [focusField, setFocusField] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +32,7 @@ const Register = () => {
       );
 
       if (res.status == 201) {
+        dispatch(setUserData(res.data.user));
         toast.success(res.data.message);
         navigate("/");
       } else {

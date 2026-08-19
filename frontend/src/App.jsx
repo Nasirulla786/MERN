@@ -1,18 +1,20 @@
 import React from 'react'
 import RoutingProvider from './services/routingProvider'
 import { Toaster } from 'react-hot-toast'
+import useCurrentUser from './hooks/useCurrentUser'
 
 export const ServerURl = "http://localhost:3000"
 
 const App = () => {
+  useCurrentUser()
 
   return (
     <>
-    <RoutingProvider />
-    <Toaster
-    position='top-right'
-    reverseOrder={false}
-    />
+      <RoutingProvider />
+      <Toaster
+        position='top-right'
+        reverseOrder={false}
+      />
 
     </>
 
