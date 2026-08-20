@@ -3,9 +3,9 @@ import fs from "fs";
 
 const uploadOnImageKit = async (file) => {
   try {
-    const buffer = await fs.readFile(file.path);
+    const buffer = await fs.promises.readFile(file.path);
     const res = await imageKit.files.upload({
-      file: buffer,
+      file: buffer.toString("base64"),
       fileName: file.originalname,
       folder: "public",
     });
