@@ -28,12 +28,12 @@ export const currentUser = async (req, res) => {
 
 export const editProfile = async (req, res) => {
   try {
-    console.log("hello")
+
     const userId = req.userId;
 
 
     const currentUser = await User.findById(userId);
-    console.log(currentUser)
+
 
     if (!currentUser) {
       return res.status(404).json({
@@ -43,12 +43,7 @@ export const editProfile = async (req, res) => {
 
 
     const { bio } = req.body;
-    console.log("this is bio",req.body)
-
-    // if(!bio){
-    //   return res.status(400).json({message:"Empty fields"})
-    // }
-
+    
     let image;
     if (req.file) {
       image = await uploadOnImageKit(req.file);
