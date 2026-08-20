@@ -6,6 +6,7 @@ import Login from '../pages/Login'
 import { useSelector } from 'react-redux'
 import Profile from '../pages/Profile'
 import EditProfile from '../pages/EditProfile'
+import CreatePostPage from '../pages/CreatePostPage'
 // import EditProfile from '../pages/EditProfile'
 
 
@@ -31,6 +32,10 @@ const RoutingProvider = () => {
             <Route
                 path='/edit-profile'
                 element={userData ? <EditProfile /> : <Navigate to="/login" />}
+            />
+            <Route
+                path='/create-post'
+                element={userData ? <CreatePostPage /> : <Navigate to="/login" />}
             />
         </Routes>
 

@@ -6,8 +6,7 @@ import User from "../models/user.model.js";
 export const uploadPost = async (req, res) => {
     try {
 
-        const { caption, mediaType } = req.body;
-
+        const { caption } = req.body;
         const user = await User.findById(req.userId);
 
         if (!user) {
@@ -23,8 +22,12 @@ export const uploadPost = async (req, res) => {
         }
 
         let media;
+        let mediaType;
         if(req.file){
-            const media = await uploadOnImageKit(req.file);
+            media = await uploadOnImageKit(req.file);
+            mediaType = req.file.mimetype.startsWith("video")
+            ? "video"
+            : "image";
         }
 
         if (!media) {
@@ -96,6 +99,8 @@ export const getCurrentUserPosts = async (req, res) => {
 export const getAllPosts = async (req, res) => {
     try {
 
+        console.log("hello this is run")
+
         const userId = req.userId;
 
         const allPosts = await Post.find({
@@ -110,6 +115,8 @@ export const getAllPosts = async (req, res) => {
             "author",
             "username dp"
         );
+
+        console.log(allPosts)
 
         return res.status(200).json({
             message: "Posts fetched successfully",
