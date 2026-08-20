@@ -16,8 +16,7 @@ const isAuth = async (req, res, next) => {
             process.env.JWT_SECRET
         );
 
-        console.log("this is verifyToken", verifyToken);
-
+    
         const findUser = await User.findById(verifyToken.id);
 
         if (!findUser) {
