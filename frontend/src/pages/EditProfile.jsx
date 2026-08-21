@@ -61,7 +61,7 @@ const EditProfile = () => {
         { withCredentials: true },
       );
 
-      console.log("thisi ",res)
+   
 
       if (res.status == 200) {
         toast.success(res.data.message);

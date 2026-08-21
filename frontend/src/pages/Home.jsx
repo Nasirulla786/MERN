@@ -106,25 +106,47 @@ const Home = () => {
 
 
   useEffect(() => {
-    const fetchAllPosts = async () => {
-      try {
-        const res = await axios.get(`${ServerURl}/api/get-all-post`, { withCredentials: true })
-        console.log("this is res", res)
-        if (res.status === 200) {
-          setFeedPosts(res.data.posts)
-        }
-
-      } catch (error) {
-        console.error("Fetch all posts error", error)
-
-      }
-
-
-    }
     fetchAllPosts()
+
 
   }, [])
 
+  const fetchAllPosts = async () => {
+    try {
+      const res = await axios.get(`${ServerURl}/api/get-all-post`, { withCredentials: true })
+      if (res.status === 200) {
+        setFeedPosts(res.data.posts)
+      }
+
+    } catch (error) {
+      console.error("Fetch all posts error", error)
+
+    }
+
+
+  }
+
+
+
+  const handleClick = async(id)=>{
+    try {
+      const res = await axios.get(`${ServerURl}/api/like/${id}` , {withCredentials:true})
+      // fetchAllPosts()
+      const post = res.data.post
+      const updatePost = feedPosts.map((p)=>p._id==post._id?post:p)
+      setFeedPosts(updatePost)
+
+      console.log("this is res",res)
+
+    } catch (error) {
+      console.error("handle like error",error)
+
+    }
+
+  }
+
+
+  console.log(feedPosts)
 
   return (
     <div className="min-h-screen bg-[#120f1a] text-[#f7f5fb]">
@@ -280,45 +302,57 @@ const Home = () => {
 
           {/* Post feed */}
           <div className="flex flex-col gap-5">
-            {feedPosts.length == 0 ? <div className="h-full w-full text-2xl font-bold flex items-center justify-center my-10">Posts not found..</div> : feedPosts.map((post, idx) => (
-              <div
-                key={idx}
-                className="bg-[#1c1728] border border-white/10 rounded-2xl overflow-hidden shadow-lg shadow-black/20"
-              >
-                {/* Post header */}
-                <div className="flex items-center gap-3 p-3">
-                  <div className={`p-[2px] rounded-full ${GRADIENT}`}>
-                    <img src={post?.author?.dp} alt={post?.author?.username} className="w-9 h-9 rounded-full object-cover border-2 border-[#1c1728]" />
+            {feedPosts.length == 0 ? <div className="h-full w-full text-2xl font-bold flex items-center justify-center my-10">Posts not found..</div> : feedPosts.map((post, idx) =>
+              {
+                const alreadyLike = post?.likes.some((userId)=>userId==userData?._id)
+                return(
+                  <div
+                  key={idx}
+                  className="bg-[#1c1728] border border-white/10 rounded-2xl overflow-hidden shadow-lg shadow-black/20"
+                >
+                  {/* Post header */}
+                  <div className="flex items-center gap-3 p-3">
+                    <div className={`p-[2px] rounded-full ${GRADIENT}`}>
+                      <img src={post?.author?.dp} alt={post?.author?.username} className="w-9 h-9 rounded-full object-cover border-2 border-[#1c1728]" />
+                    </div>
+                    <p className="text-sm font-semibold">{post?.caption}</p>
                   </div>
-                  <p className="text-sm font-semibold">{post?.caption}</p>
-                </div>
 
-                {/* Post image */}
-                <div className="overflow-hidden">
-                  <img
-                    src={post?.media}
-                    alt="post"
-                    className="w-full max-h-[500px] object-cover hover:scale-[1.02] transition-transform duration-300"
-                  />
-                </div>
+                  {/* Post image */}
+                  <div className="overflow-hidden">
+                    <img
+                      src={post?.media}
+                      alt="post"
+                      className="w-full max-h-[500px] object-cover hover:scale-[1.02] transition-transform duration-300"
+                    />
+                  </div>
 
-                {/* Post actions */}
-                <div className="flex items-center gap-4 p-3 text-[#f7f5fb]">
-                  <Heart size={22} className="cursor-pointer hover:text-[#e1306c] hover:scale-110 transition-transform" />
-                  <MessageCircle size={22} className="cursor-pointer hover:text-[#ffe500] hover:scale-110 transition-transform" />
-                  <Send size={22} className="cursor-pointer hover:text-[#6c2bd9] hover:scale-110 transition-transform" />
-                </div>
+                  {/* Post actions */}
+                  <div className="flex items-center gap-4 p-3 text-[#f7f5fb]">
+                  <div className="cursor-pointer" onClick={()=>handleClick(post?._id)} >
+                  {
+                      alreadyLike? <Heart size={22} className="cursor-pointer hover:text-[#e1306c]  hover:scale-110 transition-transform " stroke="red"   fill="red"/>:<Heart size={22} className="cursor-pointer hover:text-[#e1306c] hover:scale-110 transition-transform" />
+                    }
+                  </div>
 
-                {/* Likes + caption */}
-                <div className="px-3 pb-3">
-                  <p className="text-sm font-semibold">{post.likes} likes</p>
-                  <p className="text-sm text-[#9c93b8]">
-                    <span className="text-[#f7f5fb] font-semibold mr-1">{post.name}</span>
-                    {post.caption}
-                  </p>
+                    <MessageCircle size={22} className="cursor-pointer hover:text-[#ffe500] hover:scale-110 transition-transform" />
+                    <Send size={22} className="cursor-pointer hover:text-[#6c2bd9] hover:scale-110 transition-transform" />
+                  </div>
+
+                  {/* Likes + caption */}
+                  <div className="px-3 pb-3">
+                    <p className="text-sm font-semibold">{post.likes.length} likes</p>
+                    <p className="text-sm text-[#9c93b8]">
+                      <span className="text-[#f7f5fb] font-semibold mr-1">{post.name}</span>
+                      {post.caption}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+                )
+
+              }
+
+            )}
           </div>
         </main>
 
