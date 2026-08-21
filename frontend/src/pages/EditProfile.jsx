@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { ServerURl } from "../App";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/slices/userSlice";
 
 const EditProfile = () => {
   const [bio, setBio] = useState("");
@@ -43,6 +45,8 @@ const EditProfile = () => {
     setPreviewImage(URL.createObjectURL(file));
   };
 
+  const dispatch = useDispatch()
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -61,7 +65,9 @@ const EditProfile = () => {
         { withCredentials: true },
       );
 
-   
+      dispatch(setUserData(res.data.user))
+
+
 
       if (res.status == 200) {
         toast.success(res.data.message);

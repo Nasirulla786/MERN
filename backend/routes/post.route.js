@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllPosts, getCurrentUserPosts, handleLike, uploadPost } from "../controllers/post.controller.js";
+import { addComment, getAllComments, getAllPosts, getCurrentUserPosts, handleLike, uploadPost } from "../controllers/post.controller.js";
 import isAuth from "../middleware/isAuth.js";
 import upload from "../middleware/multer.js";
 
@@ -10,6 +10,8 @@ postRouter.post("/upload-post",isAuth, upload.single("image"), uploadPost)
 postRouter.get("/get-current-user-post",isAuth, getCurrentUserPosts)
 postRouter.get("/get-all-post", isAuth, getAllPosts)
 postRouter.get("/like/:id", isAuth, handleLike)
+postRouter.post("/add-comment/:id", isAuth, addComment)
+postRouter.get("/get-comments/:id", isAuth, getAllComments)
 
 
 

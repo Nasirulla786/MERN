@@ -43,7 +43,7 @@ export const editProfile = async (req, res) => {
 
 
     const { bio } = req.body;
-    
+
     let image;
     if (req.file) {
       image = await uploadOnImageKit(req.file);
@@ -63,7 +63,7 @@ export const editProfile = async (req, res) => {
     await currentUser.save();
 
     return res.status(200).json({
-      message: "Profile Update successfully",
+      user:currentUser, message: "Profile Update successfully",
     });
   } catch (error) {
     console.error("editProfile controller Error", error);

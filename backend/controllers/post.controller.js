@@ -109,26 +109,88 @@ export const getAllPosts = async (req, res) => {
 export const handleLike = async (req, res) => {
   try {
     const postId = req.params.id;
-    let message;
     const post = await Post.findById(postId);
+    const userId = req.userId;
+    if (userId) {
+      return res.status(401).json({ message: "user not authenticate" });
+    }
     if (!post) {
       return res.status(404).json({ message: "Post not found..!" });
     }
 
-    const alreadyPost = post.likes.some((userId) => userId.toString() == req.userId.toString());
+    const alreadyPost = post.likes.some(
+      (userId) => userId.toString() == req.userId.toString(),
+    );
     if (alreadyPost) {
-      post.likes = post.likes.filter((userId) => userId.toString() !=req.userId.toString() );
-      message = false;
+      post.likes = post.likes.filter(
+        (userId) => userId.toString() != req.userId.toString(),
+      );
     } else {
       post.likes.push(req.userId);
-      message = true;
     }
 
-    await post.save()
+    await post.save();
 
-    return res.status(200).json({ post, message: message });
+    return res.status(200).json({ post });
   } catch (error) {
     console.error("likes posts error:", error);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+export const addComment = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.userId;
+    if (!userId) {
+      return res.status(401).json({ message: "user not authenticate" });
+    }
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found..!" });
+    }
+    const { message } = req.body;
+    if (!message) {
+      return res.status(400).json({ message: "Empty Message..." });
+    }
+    post.comments.push({ author: userId, message });
+    await post.populate("comments.author" , "username dp");
+    await post.save();
+
+    return res.status(200).json({ post });
+  } catch (error) {
+    console.error("add comment error:", error);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+
+
+export const getAllComments = async (req, res) => {
+  try {
+    const postId = req.params.id;
+
+    const post = await Post.findById(postId)
+      .populate("comments.author", "username dp").sort({createdAt:-1});
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found..!",
+      });
+    }
+
+    return res.status(200).json({
+      comments: post.comments,
+    });
+
+  } catch (error) {
+    console.error("get all comments error:", error);
 
     return res.status(500).json({
       message: "Internal server error",
