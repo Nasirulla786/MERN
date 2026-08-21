@@ -155,11 +155,16 @@ const Home = () => {
     }
   };
 
+
+
+  //Like
   const handleClick = async (id) => {
     try {
       const res = await axios.get(`${ServerURl}/api/like/${id}`, {
         withCredentials: true,
       });
+
+      console.log("this is res",res)
       // fetchAllPosts() //alternative for ui re-render
       const post = res.data.post;
       const updatePost = feedPosts.map((p) => (p._id == post._id ? post : p));
@@ -189,6 +194,7 @@ const Home = () => {
 
     const fetchComments = async (req, res) => {
       try {
+        if (!commentModelOpen) return;
         const res = await axios.get(`${ServerURl}/api/get-comments/${commentModelOpen}`, { withCredentials: true })
         setPostComments(res.data.comments)
 

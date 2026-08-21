@@ -108,10 +108,15 @@ export const getAllPosts = async (req, res) => {
 
 export const handleLike = async (req, res) => {
   try {
+    // console.log("cha;; gyaa")
     const postId = req.params.id;
+    // console.log(postId)
     const post = await Post.findById(postId);
+
+
     const userId = req.userId;
-    if (userId) {
+
+    if (!userId) {
       return res.status(401).json({ message: "user not authenticate" });
     }
     if (!post) {
@@ -121,11 +126,16 @@ export const handleLike = async (req, res) => {
     const alreadyPost = post.likes.some(
       (userId) => userId.toString() == req.userId.toString(),
     );
+
+    // console.log(alreadyPost)
+
     if (alreadyPost) {
+
       post.likes = post.likes.filter(
         (userId) => userId.toString() != req.userId.toString(),
       );
     } else {
+ 
       post.likes.push(req.userId);
     }
 
