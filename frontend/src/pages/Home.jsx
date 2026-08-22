@@ -22,6 +22,7 @@ import { ServerURl } from "../App";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setUserData } from "../redux/slices/userSlice";
+import StoryComponent from "../components/StoryComponent";
 
 // ---- Dummy data (replace these with real API calls later) ----
 const dummyFriends = [
@@ -30,11 +31,7 @@ const dummyFriends = [
   { id: 3, name: "Rohan Shah", dp: "https://i.pravatar.cc/100?img=3" },
 ];
 
-const dummyStories = [
-  { id: 1, name: "Riya", dp: "https://i.pravatar.cc/100?img=4" },
-  { id: 2, name: "Kabir", dp: "https://i.pravatar.cc/100?img=5" },
-  { id: 3, name: "Sana", dp: "https://i.pravatar.cc/100?img=6" },
-];
+
 
 const dummyReels = [
   {
@@ -97,7 +94,7 @@ const createOptions = [
     label: "Story",
     desc: "Share a 24 hour moment",
     icon: Camera,
-    path: "/create-story",
+    path: "/upload-story",
   },
 ];
 
@@ -353,37 +350,7 @@ const Home = () => {
 
         {/* ===== SECTION 2: Stories + Reels + Post feed (middle, always visible) ===== */}
         <main className="flex flex-col gap-6 px-4 lg:px-0 py-4">
-          {/* Stories row */}
-          <div className="flex gap-4 overflow-x-auto pb-1 [scrollbar-width:none]">
-            {/* Add your own story */}
-            <Link
-              to="/camera"
-              className="flex flex-col items-center gap-1 shrink-0"
-            >
-              <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#9c93b8] flex items-center justify-center hover:border-[#ffe500] transition-colors">
-                <Plus size={22} className="text-[#9c93b8]" />
-              </div>
-              <span className="text-xs text-[#9c93b8]">Your story</span>
-            </Link>
-
-            {dummyStories.map((story) => (
-              <div
-                key={story.id}
-                className="flex flex-col items-center gap-1 shrink-0 cursor-pointer"
-              >
-                <div
-                  className={`w-16 h-16 rounded-full p-[2px] ${GRADIENT} hover:scale-105 transition-transform`}
-                >
-                  <img
-                    src={story.dp}
-                    alt={story.name}
-                    className="w-full h-full rounded-full object-cover border-2 border-[#120f1a]"
-                  />
-                </div>
-                <span className="text-xs text-[#9c93b8]">{story.name}</span>
-              </div>
-            ))}
-          </div>
+       <StoryComponent data ={userData} />
 
           {/* Reels row */}
           <div>
