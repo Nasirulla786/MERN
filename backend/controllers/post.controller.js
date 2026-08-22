@@ -135,9 +135,11 @@ export const handleLike = async (req, res) => {
         (userId) => userId.toString() != req.userId.toString(),
       );
     } else {
- 
+
       post.likes.push(req.userId);
     }
+
+    await post.populate("author" ,"username , dp")
 
     await post.save();
 
