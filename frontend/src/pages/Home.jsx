@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import { setUserData } from "../redux/slices/userSlice";
 import StoryComponent from "../components/StoryComponent";
 import SearchBarLaptop from "../components/SearchBarLaptop";
+import SuggestedFollowers from "../components/SuggestedFollowers";
 
 // ---- Dummy data (replace these with real API calls later) ----
 const dummyFriends = [
@@ -332,26 +333,9 @@ const Home = () => {
           </nav>
 
           {/* Friends list */}
-          <div>
-            <p className="text-xs uppercase tracking-wide text-[#6f6789] mb-2">
-              Friends
-            </p>
-            <div className="flex flex-col gap-3">
-              {dummyFriends.map((friend) => (
-                <div
-                  key={friend.id}
-                  className="flex items-center gap-3 hover:bg-white/5 p-1.5 rounded-lg cursor-pointer"
-                >
-                  <img
-                    src={friend.dp}
-                    alt={friend.name}
-                    className="w-9 h-9 rounded-full object-cover"
-                  />
-                  <p className="text-sm">{friend.name}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+
+          <SuggestedFollowers />
+
         </aside>
 
         {/* ===== SECTION 2: Stories + Reels + Post feed (middle, always visible) ===== */}

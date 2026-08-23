@@ -214,3 +214,27 @@ export const handleSearch = async (req, res) => {
       });
   }
 };
+
+
+
+export const fetchAllUsers = async (req, res) => {
+  try {
+
+      const users = await User.find({
+          _id: { $ne: req.userId }
+      });
+
+      return res.status(200).json({
+          message: "All users fetched successfully",
+          users
+      });
+
+  } catch (error) {
+
+      console.error("Fetch all users error:", error);
+
+      return res.status(500).json({
+          message: "Internal Server Error"
+      });
+  }
+};

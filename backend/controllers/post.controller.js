@@ -1,3 +1,4 @@
+import uploadOnCloudinary from "../config/uploadOnCloudinary.js";
 import uploadOnImageKit from "../config/uploadOnImageKit.js";
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
@@ -22,7 +23,7 @@ export const uploadPost = async (req, res) => {
     let media;
     let mediaType;
     if (req.file) {
-      media = await uploadOnImageKit(req.file);
+      media = await uploadOnCloudinary(req.file.path);
       mediaType = req.file.mimetype.startsWith("video") ? "video" : "image";
     }
 
