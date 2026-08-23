@@ -109,9 +109,8 @@ export const getAllPosts = async (req, res) => {
 
 export const handleLike = async (req, res) => {
   try {
-    // console.log("cha;; gyaa")
+
     const postId = req.params.id;
-    // console.log(postId)
     const post = await Post.findById(postId);
 
 
@@ -128,7 +127,7 @@ export const handleLike = async (req, res) => {
       (userId) => userId.toString() == req.userId.toString(),
     );
 
-    // console.log(alreadyPost)
+
 
     if (alreadyPost) {
 
@@ -208,5 +207,31 @@ export const getAllComments = async (req, res) => {
     return res.status(500).json({
       message: "Internal server error",
     });
+  }
+};
+
+
+
+export const myPosts = async (req, res) => {
+  try {
+
+      const posts = await Post.find({
+          author: req.userId
+      }).populate(
+          "author",
+          "userName dp"
+      );
+
+      return res.status(200).json(posts);
+
+  } catch (error) {
+
+      console.error("My Posts Error:", error);
+
+      return res.status(500).json({
+          message: "Server error",
+          error: error.message
+      });
+
   }
 };
