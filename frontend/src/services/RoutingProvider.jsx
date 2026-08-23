@@ -8,6 +8,8 @@ import Profile from '../pages/Profile'
 import EditProfile from '../pages/EditProfile'
 import CreatePostPage from '../pages/CreatePostPage'
 import UploadStory from '../pages/UploadStory'
+import UploadReel from '../pages/UploadReel'
+import FriendProfilePage from '../pages/FriendProfilePage'
 // import EditProfile from '../pages/EditProfile'
 
 
@@ -41,6 +43,14 @@ const RoutingProvider = () => {
             <Route
                 path='/upload-story'
                 element={userData ? <UploadStory /> : <Navigate to="/login" />}
+            />
+            <Route
+                path='/upload-reel'
+                element={userData ? <UploadReel/> : <Navigate to="/login" />}
+            />
+            <Route
+                path='/friend-profile-page/:id'
+                element={userData ? <FriendProfilePage/> : <Navigate to="/login" />}
             />
         </Routes>
 

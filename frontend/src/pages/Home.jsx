@@ -88,7 +88,7 @@ const createOptions = [
     label: "Reel",
     desc: "Record a short video",
     icon: Film,
-    path: "/create-reel",
+    path: "/upload-reel",
   },
   {
     label: "Story",
@@ -401,7 +401,7 @@ const Home = () => {
                   (userId) => userId == userData?._id,
                 );
                 return (
-                  <div
+                  <Link to={"/friend-profile-page/"+post?.author?._id}
                     key={idx}
                     className="bg-[#1c1728] border border-white/10 rounded-2xl overflow-hidden shadow-lg shadow-black/20 relative"
                   >
@@ -589,7 +589,7 @@ const Home = () => {
                         {post.caption}
                       </p>
                     </div>
-                  </div>
+                  </Link>
                 );
               })
             )}

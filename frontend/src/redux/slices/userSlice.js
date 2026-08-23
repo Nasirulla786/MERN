@@ -4,7 +4,8 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     userData: null,
-    loading:true
+    loading:true,
+    // following:null
   },
   reducers: {
     setUserData: (state, action) => {
@@ -15,6 +16,12 @@ const userSlice = createSlice({
       state.userData = null;
       state.loading = false;
   },
+  // setFollowing :(state,action)=>{
+  //   state.following = action.payload
+  // },
+  // toggleFollow :(state,action)=>{
+
+  // }
   },
 });
 
