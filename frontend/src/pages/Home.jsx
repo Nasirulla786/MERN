@@ -277,7 +277,7 @@ const Home = () => {
           {/* Nav links */}
           <nav className="flex flex-col gap-1">
             <Link
-              to="/home"
+              to="/"
               className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 text-sm font-medium"
             >
               <HomeIcon size={18} /> Home
@@ -407,12 +407,16 @@ const Home = () => {
                   (userId) => userId == userData?._id,
                 );
                 return (
-                  <Link to={"/friend-profile-page/"+post?.author?._id}
+                  <div
                     key={idx}
                     className="bg-[#1c1728] border border-white/10 rounded-2xl overflow-hidden shadow-lg shadow-black/20 relative"
                   >
                     {/* Post header */}
-                    <div className="flex items-center gap-3 p-3">
+
+
+<Link to={"/friend-profile-page/"+post?.author?._id}
+
+                    className="flex items-center gap-3 p-3">
                       <div className={`p-[2px] rounded-full ${GRADIENT}`}>
                         <img
                           src={post?.author?.dp}
@@ -421,7 +425,7 @@ const Home = () => {
                         />
                       </div>
                       <p className="text-sm font-semibold">{post?.author?.username}</p>
-                    </div>
+                    </Link>
 
                     {/* Post image */}
                     <div className="overflow-hidden">
@@ -595,7 +599,7 @@ const Home = () => {
                         {post.caption}
                       </p>
                     </div>
-                  </Link>
+                  </div>
                 );
               })
             )}
