@@ -144,8 +144,7 @@ export const followUnfollowUser = async (req, res) => {
       } else {
 
 
-          if (
-              !user.following.some(
+          if (!user.following.some(
                   (id) => id.toString() === targetUserId.toString()
               )
           ) {
@@ -172,10 +171,46 @@ export const followUnfollowUser = async (req, res) => {
       }
 
   } catch (error) {
-      console.log("FOLLOW ERROR:", error);
+      console.error("FOLLOW ERROR:", error);
 
       return res.status(500).json({
           message: error.message,
+      });
+  }
+};
+
+
+
+export const handleSearch = async (req, res) => {
+  try {
+      const { query } = req.query;
+
+      const currentUser = await User.findById(req.userId)
+
+      if (!query) {
+          return res.status(400).json({
+              message: "Search query is required"
+          });
+      }
+
+      const users = await User.find({
+          username: {
+              $regex: query,
+              $options: "i",
+              $ne:currentUser?.username
+          }
+      })
+
+      return res.status(200).json({
+          message: "Users found successfully",
+          users
+      });
+
+  } catch (error) {
+      console.error("Search Error:", error);
+
+      return res.status(500).json({
+          message: "Internal Server Error"
       });
   }
 };

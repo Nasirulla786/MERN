@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setUserData } from "../redux/slices/userSlice";
 import StoryComponent from "../components/StoryComponent";
+import SearchBarLaptop from "../components/SearchBarLaptop";
 
 // ---- Dummy data (replace these with real API calls later) ----
 const dummyFriends = [
@@ -52,6 +53,9 @@ const dummyReels = [
   },
 ];
 
+
+
+
 const dummyChats = [
   {
     id: 1,
@@ -72,6 +76,8 @@ const dummyChats = [
     lastMsg: "Sent the files ✅",
   },
 ];
+
+
 
 // Small reusable style for the gradient the whole theme is built around
 const GRADIENT = "bg-gradient-to-tr from-[#6c2bd9] via-[#e1306c] to-[#ffe500]";
@@ -597,44 +603,10 @@ const Home = () => {
         </main>
 
         {/* ===== SECTION 3: Search + Chat (right, hidden on mobile) ===== */}
-        <aside className="hidden lg:flex flex-col gap-5 sticky top-4 h-fit">
-          {/* Search bar */}
-          <div className="flex items-center gap-2 bg-[#1c1728] border border-white/10 rounded-xl px-3 py-2">
-            <Search size={16} className="text-[#6f6789]" />
-            <input
-              type="text"
-              placeholder="Search people..."
-              className="bg-transparent outline-none text-sm w-full placeholder:text-[#6f6789]"
-            />
-          </div>
 
-          {/* Chat list */}
-          <div>
-            <p className="text-xs uppercase tracking-wide text-[#6f6789] mb-2">
-              Messages
-            </p>
-            <div className="flex flex-col gap-3">
-              {dummyChats.map((chat) => (
-                <div
-                  key={chat.id}
-                  className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-2 rounded-xl"
-                >
-                  <img
-                    src={chat.dp}
-                    alt={chat.name}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium">{chat.name}</p>
-                    <p className="text-xs text-[#9c93b8] truncate">
-                      {chat.lastMsg}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
+
+        <SearchBarLaptop />
+
       </div>
 
       {/* ---------- Floating messages button — small navbar, mobile only ---------- */}
