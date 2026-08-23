@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { ServerURl } from "../App";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/slices/userSlice";
+import { ArrowLeft } from "lucide-react";
 
 const EditProfile = () => {
   const [bio, setBio] = useState("");
@@ -95,6 +96,10 @@ const EditProfile = () => {
   return (
     <div className="glint-edit-root">
       <style>{editProfileStyles}</style>
+
+      <Link to="/profile" className="absolute p-5 top-0 left-1">
+      <ArrowLeft />
+      </Link>
 
       <div className="glint-edit-card">
         <h2>Edit Profile</h2>

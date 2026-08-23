@@ -11,6 +11,7 @@ import UploadStory from '../pages/UploadStory'
 import UploadReel from '../pages/UploadReel'
 import FriendProfilePage from '../pages/FriendProfilePage'
 import Reels from '../pages/Reels'
+import MobileSearch from '../pages/MobileSearch'
 // import EditProfile from '../pages/EditProfile'
 
 
@@ -56,6 +57,10 @@ const RoutingProvider = () => {
             <Route
                 path='/reels'
                 element={userData ? <Reels /> : <Navigate to="/login" />}
+            />
+            <Route
+                path='/mobile-search'
+                element={userData ? <MobileSearch  /> : <Navigate to="/login" />}
             />
         </Routes>
 

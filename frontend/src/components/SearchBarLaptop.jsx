@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 const SearchBarLaptop = () => {
 
+   
+
     const [searchValue, setSearchValue] = useState("");
     const [suggestedUsers, setSuggestedUsers] = useState([]);
 

@@ -357,7 +357,7 @@ const Home = () => {
             </div>
             <div className="flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none]">
               {dummyReels.map((reel) => (
-                <div
+                <Link to={"/reels"}
                   key={reel.id}
                   className="relative shrink-0 w-28 h-44 rounded-xl overflow-hidden cursor-pointer group"
                 >
@@ -374,7 +374,7 @@ const Home = () => {
                   <p className="absolute bottom-2 left-2 text-xs font-medium flex items-center gap-1">
                     <Play size={11} className="fill-white" /> {reel.views}
                   </p>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -610,10 +610,10 @@ const Home = () => {
 
       {/* ---------- Bottom navbar (mobile only) ---------- */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-20 bg-[#120f1a]/95 backdrop-blur border-t border-white/10 flex items-center justify-around py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-        <Link to="/home" className="p-2 text-[#ffe500]">
+        <Link to="/" className="p-2 text-[#ffe500]">
           <HomeIcon size={22} />
         </Link>
-        <Link to="/search" className="p-2 text-[#f7f5fb]">
+        <Link to="/mobile-search" className="p-2 text-[#f7f5fb]">
           <Search size={22} />
         </Link>
 

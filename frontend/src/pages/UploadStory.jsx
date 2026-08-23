@@ -76,7 +76,7 @@ const UploadStory = () => {
     return (
       <div className="min-h-screen bg-[#120f1a] text-[#f7f5fb] flex flex-col">
         <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
-          <Link to="/home" className="p-1.5 rounded-full hover:bg-white/5">
+          <Link to="/" className="p-1.5 rounded-full hover:bg-white/5">
             <ArrowLeft size={20} />
           </Link>
           <p className="font-semibold text-base">Add to Story</p>
