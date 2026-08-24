@@ -70,7 +70,9 @@ const ChatPage = () => {
                 }
             );
 
-            // console.log("Message sent:", res.data);
+
+            // console.log("Message sent:", res.data.data);
+            setStoreMessages((prev)=>[...prev,res.data.data])
 
             setMessage("");
 
