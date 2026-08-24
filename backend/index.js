@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import postRouter from "./routes/post.route.js";
 import storyRouter from "./routes/story.route.js";
 import loopRouter from "./routes/loop.route.js";
+import messageRouter from "./routes/message.route.js";
 dotenv.config();
 
 const PORT = process.env.PORT || 8000;
@@ -29,6 +30,7 @@ app.use("/api", userRouter);
 app.use("/api", postRouter);
 app.use("/api", storyRouter);
 app.use("/api", loopRouter);
+app.use("/api", messageRouter);
 
 app.listen(PORT, async () => {
   await connectDb();

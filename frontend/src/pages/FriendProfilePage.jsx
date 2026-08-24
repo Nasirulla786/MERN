@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import axios from "axios";
 
@@ -80,7 +80,8 @@ const FriendProfilePage = () => {
         withCredentials: true,
       });
 
-      const allPosts = result.data;
+      const allPosts = result.data.posts;
+      // console.log("this is post res",allPosts)
 
       const filteredPosts = allPosts.filter(
         (post) =>
@@ -92,6 +93,9 @@ const FriendProfilePage = () => {
       console.log("Friend posts error:", error);
     }
   };
+
+
+ 
 
   // ---------------------------------------
   // FRIEND REELS
@@ -278,6 +282,15 @@ const FriendProfilePage = () => {
 
               </button>
 
+
+
+              <button >
+                <Link to={`/chat-page/${user?._id}`}>
+                Message
+                </Link>
+
+              </button>
+
             </div>
 
             {/* Stats */}
@@ -416,7 +429,7 @@ const FriendProfilePage = () => {
                   {activeTab === "posts" ? (
 
                     <img
-                      src={item.image}
+                      src={item.media}
                       alt="post"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
