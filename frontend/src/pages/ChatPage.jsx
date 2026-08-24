@@ -10,6 +10,7 @@ import {
 
 import { ServerURl } from "../App";
 import { useSelector } from "react-redux";
+import socket from "../socket/socket";
 
 const ChatPage = () => {
 
@@ -21,6 +22,17 @@ const ChatPage = () => {
     const [storeMessages, setStoreMessages] = useState([]);
 
     const {userData} = useSelector((state) => state.user);
+
+
+    useEffect(() => {
+
+        if (userData?._id) {
+
+            socket.emit("join", userData._id);
+
+        }
+
+    }, []);
 
     const fetchFriendProfile = async () => {
         try {
