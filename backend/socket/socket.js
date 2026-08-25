@@ -19,6 +19,29 @@ export const initializeSocket = (server) => {
       console.log("User joined:", userId);
       onlineUsers.set(userId, socket.id);
     });
+
+    socket.on("send-message" ,({senderId, receiverId, message })=>{
+
+      const receiverSocketId = onlineUsers.get(receiverId)
+      if (!receiverSocketId) {
+        console.log("Receiver is offline");
+        return;
+    }
+
+    const receiver = io.to(receiverSocketId)
+    receiver.emit("receiver-message",{
+      sender:senderId,
+      receiver: receiverId,
+      message
+
+    })
+
+
+
+    })
+
+
+
   });
 
   return io;
