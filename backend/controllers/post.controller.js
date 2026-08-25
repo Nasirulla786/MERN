@@ -8,6 +8,9 @@ export const uploadPost = async (req, res) => {
     const { caption } = req.body;
     const user = await User.findById(req.userId);
 
+
+
+
     if (!user) {
       return res.status(404).json({
         message: "User not found",
@@ -39,6 +42,9 @@ export const uploadPost = async (req, res) => {
       mediaType,
       author: req.userId,
     });
+
+
+
 
     user.posts.push(post._id);
 
@@ -233,5 +239,46 @@ export const myPosts = async (req, res) => {
           error: error.message
       });
 
+  }
+};
+
+
+
+export const addPostView = async (req, res) => {
+  try {
+      const postId = req.params.id;
+      const userId = req.userId;
+
+      if (!userId) {
+          return res.status(401).json({
+              message: "User not authenticated"
+          });
+      }
+
+      const post = await Post.findById(postId);
+
+      if (!post) {
+          return res.status(404).json({
+              message: "Post not found"
+          });
+      }
+
+      // Same user ko dobara view count nahi karna
+      if (!post.views.some(id => id.toString() === userId.toString())) {
+          post.views.push(userId);
+          await post.save();
+      }
+
+      return res.status(200).json({
+          message: "View added",
+          views: post.views.length
+      });
+
+  } catch (error) {
+      console.error("Add post view error:", error);
+
+      return res.status(500).json({
+          message: "Internal server error"
+      });
   }
 };

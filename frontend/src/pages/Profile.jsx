@@ -1,17 +1,23 @@
+
 import React, { useEffect, useState } from "react";
+
 import { Link, useNavigate } from "react-router";
+
 import { useSelector } from "react-redux";
+
 import axios from "axios";
+
 import toast from "react-hot-toast";
 
 import {
-    Settings,
     Grid3x3,
     Film,
     Bookmark,
     Play,
     ImageIcon,
     ArrowLeft,
+    Menu,
+    LogOut,
 } from "lucide-react";
 
 import { ServerURl } from "../App";
@@ -34,10 +40,42 @@ const Profile = () => {
     const [activeTab, setActiveTab] = useState("posts");
 
     const [posts, setPosts] = useState([]);
+
     const [reels, setReels] = useState([]);
 
     const [loadingPosts, setLoadingPosts] = useState(true);
+
     const [loadingReels, setLoadingReels] = useState(true);
+
+    const [showMenu, setShowMenu] = useState(false);
+
+
+    // =========================
+    // LOGOUT
+    // =========================
+
+    const handleLogout = async () => {
+        try {
+
+            await axios.get(
+                `${ServerURl}/api/logout`,
+                {
+                    withCredentials: true,
+                }
+            );
+
+            toast.success("Logged out successfully");
+
+            navigate("/login");
+
+        } catch (error) {
+
+            console.error("Logout error:", error);
+
+            toast.error("Logout failed");
+
+        }
+    };
 
 
     // =========================
@@ -57,11 +95,8 @@ const Profile = () => {
                 }
             );
 
-
-
             const allPosts = result.data;
 
-            // Sirf current user ki posts
             const myPosts = allPosts.filter(
                 (post) =>
                     post.author?._id?.toString() ===
@@ -101,20 +136,13 @@ const Profile = () => {
                 }
             );
 
-            // console.log("this is reel",result)
-
-
-            const allReels = result.data
-
-
-
+            const allReels = result.data;
 
             const myReels = allReels?.filter(
                 (reel) =>
                     reel.author?._id?.toString() ===
                     userData?._id?.toString()
             );
-
 
             setReels(myReels);
 
@@ -141,13 +169,11 @@ const Profile = () => {
         if (!userData?._id) return;
 
         fetchPosts();
+
         fetchReels();
 
     }, [userData?._id]);
 
-
-
-    // console.log("this is posts",posts)
 
     // =========================
     // ACTIVE TAB DATA
@@ -196,20 +222,46 @@ const Profile = () => {
 
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 sticky top-0 bg-[#120f1a]/95 backdrop-blur z-10">
 
-            <Link to={"/"}>
-              <ArrowLeft />
-            </Link>
+                <Link to={"/"}>
+                    <ArrowLeft />
+                </Link>
+
 
                 <p className="font-semibold text-base">
                     {userData.username}
                 </p>
 
-                <Link
-                    to="/settings"
-                    className="p-1.5 rounded-full hover:bg-white/5"
-                >
-                    <Settings size={20} />
-                </Link>
+
+                {/* ================= MOBILE MENU ================= */}
+
+                <div className="relative md:hidden">
+
+                    <button
+                        onClick={() => setShowMenu(!showMenu)}
+                        className="p-2 rounded-full hover:bg-white/10 transition"
+                    >
+                        <Menu size={22} />
+                    </button>
+
+
+                    {showMenu && (
+
+                        <div className="absolute right-0 top-11 w-40 bg-[#1c1728] border border-white/10 rounded-xl shadow-xl overflow-hidden">
+
+                            <button
+                                onClick={handleLogout}
+                                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition"
+                            >
+                                <LogOut size={18} />
+
+                                Logout
+                            </button>
+
+                        </div>
+
+                    )}
+
+                </div>
 
             </div>
 
@@ -248,6 +300,7 @@ const Profile = () => {
                             <h1 className="text-xl md:text-2xl font-semibold">
                                 {userData.username}
                             </h1>
+
 
                             <button
                                 onClick={() => navigate("/edit-profile")}
@@ -365,9 +418,7 @@ const Profile = () => {
                     {activeTab === "posts" && loadingPosts ? (
 
                         <div className="flex justify-center py-16 text-[#6f6789]">
-
                             Loading posts...
-
                         </div>
 
                     ) : null}
@@ -378,9 +429,7 @@ const Profile = () => {
                     {activeTab === "reels" && loadingReels ? (
 
                         <div className="flex justify-center py-16 text-[#6f6789]">
-
                             Loading reels...
-
                         </div>
 
                     ) : null}
@@ -398,11 +447,17 @@ const Profile = () => {
                         <div className="flex flex-col items-center gap-2 py-16 text-[#6f6789]">
 
                             {activeTab === "reels" ? (
+
                                 <Film size={32} />
+
                             ) : activeTab === "posts" ? (
+
                                 <ImageIcon size={32} />
+
                             ) : (
+
                                 <Bookmark size={32} />
+
                             )}
 
                             <p className="text-sm">

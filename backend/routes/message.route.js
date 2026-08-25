@@ -1,6 +1,6 @@
 import express from "express";
 import isAuth from "../middleware/isAuth.js";
-import { getMessages, sendMessage } from "../controllers/message.controller.js";
+import { getChatUsers, getMessages, sendMessage } from "../controllers/message.controller.js";
 
 
 
@@ -16,5 +16,7 @@ messageRouter.get(
     isAuth,
     getMessages
 );
+
+messageRouter.get( "/chat-users", isAuth, getChatUsers );
 
 export default messageRouter;

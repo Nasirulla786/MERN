@@ -17,6 +17,7 @@ import {
   Play,
   Image,
   X,
+  MessageCircleCheck,
 } from "lucide-react";
 import { ServerURl } from "../App";
 import { useDispatch, useSelector } from "react-redux";
@@ -55,28 +56,6 @@ const dummyReels = [
 ];
 
 
-
-
-const dummyChats = [
-  {
-    id: 1,
-    name: "Aarav Mehta",
-    dp: "https://i.pravatar.cc/100?img=1",
-    lastMsg: "See you tomorrow!",
-  },
-  {
-    id: 2,
-    name: "Isha Kapoor",
-    dp: "https://i.pravatar.cc/100?img=2",
-    lastMsg: "Haha that's great 😂",
-  },
-  {
-    id: 3,
-    name: "Rohan Shah",
-    dp: "https://i.pravatar.cc/100?img=3",
-    lastMsg: "Sent the files ✅",
-  },
-];
 
 
 
@@ -124,7 +103,7 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-  const unreadChats = dummyChats.length; // replace with real unread count later
+
   const [showCreateMenu, setShowCreateMenu] = useState(false); // Post/Reel/Story sheet
 
   const dispatch = useDispatch();
@@ -215,6 +194,9 @@ const Home = () => {
 
 
 
+
+
+
   return (
     <div className="min-h-screen bg-[#120f1a] text-[#f7f5fb]">
       {/* ---------- Mobile top bar (visible only below lg) ---------- */}
@@ -231,15 +213,13 @@ const Home = () => {
         </span>
 
         <div className="flex items-center gap-3">
-          {/* Messages icon with unread badge */}
+
           <Link
-            to="/messages"
+            to="/friend-list"
             className="relative p-1.5 rounded-full hover:bg-white/5"
           >
             <Send size={20} />
-            {unreadChats > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#e1306c] border border-[#120f1a]" />
-            )}
+
           </Link>
           <Link to="/profile">
             <img
@@ -319,10 +299,10 @@ const Home = () => {
               <Bookmark size={18} /> Saved
             </Link>
             <Link
-              to="/settings"
+              to="/friend-list"
               className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm"
             >
-              <Settings size={18} /> Settings
+              <MessageCircleCheck size={18} /> Messages
             </Link>
             <button
               onClick={handleLogout}
@@ -340,7 +320,7 @@ const Home = () => {
 
         {/* ===== SECTION 2: Stories + Reels + Post feed (middle, always visible) ===== */}
         <main className="flex flex-col gap-6 px-4 lg:px-0 py-4">
-       <StoryComponent data ={userData} />
+          <StoryComponent data={userData} />
 
           {/* Reels row */}
           <div>
@@ -398,9 +378,9 @@ const Home = () => {
                     {/* Post header */}
 
 
-<Link to={"/friend-profile-page/"+post?.author?._id}
+                    <Link to={"/friend-profile-page/" + post?.author?._id}
 
-                    className="flex items-center gap-3 p-3">
+                      className="flex items-center gap-3 p-3">
                       <div className={`p-[2px] rounded-full ${GRADIENT}`}>
                         <img
                           src={post?.author?.dp}
@@ -422,8 +402,10 @@ const Home = () => {
 
                     {/* Post actions */}
                     <div className="flex items-center gap-4 p-3 text-[#f7f5fb]">
+
+                      <div className="flex w-full gap-5">
                       <div
-                        className="cursor-pointer"
+                        className="cursor-pointer flex gap-2"
                         onClick={() => handleClick(post?._id)}
                       >
                         {alreadyLike ? (
@@ -439,143 +421,152 @@ const Home = () => {
                             className="cursor-pointer hover:text-[#e1306c] hover:scale-110 transition-transform"
                           />
                         )}
+
+<p className="text-sm font-semibold">
+                        {post.likes.length}
+                      </p>
                       </div>
 
-                      <MessageCircle
-  onClick={() => setCommentModelOpen(post?._id)}
-  size={22}
-  className="cursor-pointer hover:text-[#ffe500] hover:scale-110 transition-transform"
-/>
 
-{commentModelOpen === post?._id && (
-  <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center">
-    <div
-      className="w-full sm:w-[480px] h-[82vh] sm:h-[640px] bg-[#161320] rounded-t-3xl sm:rounded-3xl border border-white/10 flex flex-col shadow-2xl shadow-black/60 animate-[slideUp_0.25s_ease-out]"
-    >
-      {/* subtle top drag handle — mobile feel */}
-      <div className="sm:hidden w-10 h-1 rounded-full bg-white/15 mx-auto mt-3" />
-
-      {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-        <div className="flex items-center gap-2">
-          <h2 className="font-semibold text-base">Comments</h2>
-          <span className="text-xs text-white/40">({postComments.length})</span>
-        </div>
-
-        <button
-          onClick={() => setCommentModelOpen("")}
-          className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center transition cursor-pointer"
-        >
-          <X size={18} />
-        </button>
-      </div>
-
-      {/* Comments — scrollable, but scrollbar hidden for a cleaner look */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-        {postComments.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center">
-            <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-3">
-              <MessageCircle size={26} className="text-white/25" />
-            </div>
-            <p className="text-sm text-white/50">No comments yet</p>
-            <p className="text-xs text-white/30 mt-1">Be the first one to comment</p>
-          </div>
-        ) : (
-          postComments.map((comment) =>
-
-
-            {
-
-              return(
-                <div key={comment._id} className="flex gap-3 items-start group">
-                <img
-                  src={comment?.author?.dp}
-                  alt={comment?.author?.username}
-                  className="w-9 h-9 rounded-full object-cover shrink-0 ring-1 ring-white/10"
-                />
-
-                <div className="flex-1 min-w-0">
-                  <div className="bg-white/[0.04] group-hover:bg-white/[0.07] transition-colors rounded-2xl rounded-tl-sm px-3.5 py-2.5">
-                    <p className="text-xs font-semibold text-white mb-1">
-                      {comment?.author?.username}
-                    </p>
-                    <p className="text-sm text-white/80 break-words leading-relaxed">
-                      {comment?.message}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-4 px-2 pt-1.5">
-                    <span className="text-[11px] text-white/30">{timeAgo(comment?.createdAt)}</span>
-                    <button className="flex items-center gap-1 text-[11px] text-white/40 hover:text-[#e1306c] transition">
-                      <Heart size={12} /> Like
-                    </button>
-                    <button className="text-[11px] text-white/40 hover:text-white transition">
-                      Reply
-                    </button>
-                  </div>
-                </div>
-              </div>
-              )
-
-            }
-
-          )
-        )}
-      </div>
-
-      {/* Comment Input */}
-      <div className="border-t border-white/10 p-4 bg-[#161320]">
-        <div className="flex items-center gap-3">
-          <img
-            src={userData?.dp}
-            alt="profile"
-            className="w-9 h-9 rounded-full object-cover shrink-0"
-          />
-
-          <div className="flex-1 relative">
-            <input
-              type="text"
-              placeholder="Add a comment..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && message.trim()) {
-                  handleComment(post?._id);
-                }
-              }}
-              className="w-full bg-white/5 border border-white/10 rounded-full pl-4 pr-12 py-2.5 text-sm outline-none placeholder:text-white/30 focus:border-transparent focus:shadow-[0_0_0_3px_rgba(225,48,108,0.25)] transition"
-            />
-
-            <button
-              onClick={() => {
-                if (message.trim()) {
-                  handleComment(post?._id);
-                }
-              }}
-              disabled={!message.trim()}
-              className="absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-gradient-to-tr from-[#6c2bd9] via-[#e1306c] to-[#ffe500] flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition cursor-pointer"
-            >
-              <Send size={16} className="text-black" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
-
-                      <Send
+   <div className="flex gap-2">
+   <MessageCircle
+                        onClick={() => setCommentModelOpen(post?._id)}
                         size={22}
-                        className="cursor-pointer hover:text-[#6c2bd9] hover:scale-110 transition-transform"
+                        className="cursor-pointer hover:text-[#ffe500] hover:scale-110 transition-transform"
                       />
+
+<p className="text-sm font-semibold">
+                        {post.comments.length}
+                      </p>
+   </div>
+                      </div>
+
+
+
+
+   <Bookmark />
+
+                      {commentModelOpen === post?._id && (
+                        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center">
+                          <div
+                            className="w-full sm:w-[480px] h-[82vh] sm:h-[640px] bg-[#161320] rounded-t-3xl sm:rounded-3xl border border-white/10 flex flex-col shadow-2xl shadow-black/60 animate-[slideUp_0.25s_ease-out]"
+                          >
+                            {/* subtle top drag handle — mobile feel */}
+                            <div className="sm:hidden w-10 h-1 rounded-full bg-white/15 mx-auto mt-3" />
+
+                            {/* Header */}
+                            <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+                              <div className="flex items-center gap-2">
+                                <h2 className="font-semibold text-base">Comments</h2>
+                                <span className="text-xs text-white/40">({postComments.length})</span>
+                              </div>
+
+                              <button
+                                onClick={() => setCommentModelOpen("")}
+                                className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center transition cursor-pointer"
+                              >
+                                <X size={18} />
+                              </button>
+                            </div>
+
+                            {/* Comments — scrollable, but scrollbar hidden for a cleaner look */}
+                            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                              {postComments.length === 0 ? (
+                                <div className="h-full flex flex-col items-center justify-center text-center">
+                                  <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-3">
+                                    <MessageCircle size={26} className="text-white/25" />
+                                  </div>
+                                  <p className="text-sm text-white/50">No comments yet</p>
+                                  <p className="text-xs text-white/30 mt-1">Be the first one to comment</p>
+                                </div>
+                              ) : (
+                                postComments.map((comment) => {
+
+                                  return (
+                                    <div key={comment._id} className="flex gap-3 items-start group">
+                                      <img
+                                        src={comment?.author?.dp}
+                                        alt={comment?.author?.username}
+                                        className="w-9 h-9 rounded-full object-cover shrink-0 ring-1 ring-white/10"
+                                      />
+
+                                      <div className="flex-1 min-w-0">
+                                        <div className="bg-white/[0.04] group-hover:bg-white/[0.07] transition-colors rounded-2xl rounded-tl-sm px-3.5 py-2.5">
+                                          <p className="text-xs font-semibold text-white mb-1">
+                                            {comment?.author?.username}
+                                          </p>
+                                          <p className="text-sm text-white/80 break-words leading-relaxed">
+                                            {comment?.message}
+                                          </p>
+                                        </div>
+
+                                        <div className="flex items-center gap-4 px-2 pt-1.5">
+                                          <span className="text-[11px] text-white/30">{timeAgo(comment?.createdAt)}</span>
+                                          <button className="flex items-center gap-1 text-[11px] text-white/40 hover:text-[#e1306c] transition">
+                                            <Heart size={12} /> Like
+                                          </button>
+                                          <button className="text-[11px] text-white/40 hover:text-white transition">
+                                            Reply
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )
+
+                                }
+
+                                )
+                              )}
+                            </div>
+
+                            {/* Comment Input */}
+                            <div className="border-t border-white/10 p-4 bg-[#161320]">
+                              <div className="flex items-center gap-3">
+                                <img
+                                  src={userData?.dp}
+                                  alt="profile"
+                                  className="w-9 h-9 rounded-full object-cover shrink-0"
+                                />
+
+                                <div className="flex-1 relative">
+                                  <input
+                                    type="text"
+                                    placeholder="Add a comment..."
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
+                                    onKeyDown={(e) => {
+                                      if (e.key === "Enter" && message.trim()) {
+                                        handleComment(post?._id);
+                                      }
+                                    }}
+                                    className="w-full bg-white/5 border border-white/10 rounded-full pl-4 pr-12 py-2.5 text-sm outline-none placeholder:text-white/30 focus:border-transparent focus:shadow-[0_0_0_3px_rgba(225,48,108,0.25)] transition"
+                                  />
+
+                                  <button
+                                    onClick={() => {
+                                      if (message.trim()) {
+                                        handleComment(post?._id);
+                                      }
+                                    }}
+                                    disabled={!message.trim()}
+                                    className="absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-gradient-to-tr from-[#6c2bd9] via-[#e1306c] to-[#ffe500] flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition cursor-pointer"
+                                  >
+                                    <Send size={16} className="text-black" />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+
+
                     </div>
 
                     {/* Likes + caption */}
                     <div className="px-3 pb-3">
-                      <p className="text-sm font-semibold">
-                        {post.likes.length} likes
-                      </p>
+
                       <p className="text-sm text-[#9c93b8]">
                         <span className="text-[#f7f5fb] font-semibold mr-1">
                           {post.name}
@@ -599,13 +590,11 @@ const Home = () => {
 
       {/* ---------- Floating messages button — small navbar, mobile only ---------- */}
       <Link
-        to="/messages"
+        to="/friend-list"
         className="lg:hidden fixed right-4 bottom-20 z-20 w-12 h-12 rounded-full bg-[#1c1728] border border-white/10 shadow-lg shadow-black/40 flex items-center justify-center"
       >
         <MessageCircle size={20} />
-        {unreadChats > 0 && (
-          <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-[#e1306c] border border-[#1c1728]" />
-        )}
+
       </Link>
 
       {/* ---------- Bottom navbar (mobile only) ---------- */}

@@ -13,6 +13,7 @@ import FriendProfilePage from '../pages/FriendProfilePage'
 import Reels from '../pages/Reels'
 import MobileSearch from '../pages/MobileSearch'
 import ChatPage from '../pages/ChatPage'
+import FriendList from '../pages/FriendList'
 // import EditProfile from '../pages/EditProfile'
 
 
@@ -66,6 +67,10 @@ const RoutingProvider = () => {
             <Route
                 path='/chat-page/:id'
                 element={userData ? <ChatPage /> : <Navigate to="/login" />}
+            />
+            <Route
+                path='/friend-list'
+                element={userData ? <FriendList /> : <Navigate to="/login" />}
             />
         </Routes>
 

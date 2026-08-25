@@ -1,4 +1,5 @@
 import Message from "../models/message.model.js";
+import User from "../models/user.model.js";
 
 export const sendMessage = async (req, res) => {
   try {
@@ -96,4 +97,71 @@ export const getMessages = async (req, res) => {
 
     }
 
+};
+
+
+
+
+export const getChatUsers = async (req, res) => {
+    try {
+        const currentUserId = req.userId;
+
+        // Current user ke saare messages
+        const messages = await Message.find({
+            $or: [
+                { sender: currentUserId },
+                { receiver: currentUserId }
+            ]
+        }).sort({ createdAt: -1 });
+
+        // Har user ki sirf latest message rakhni hai
+        const latestMessages = new Map();
+
+        for (const message of messages) {
+
+            const otherUserId =
+                message.sender.toString() === currentUserId.toString()
+                    ? message.receiver.toString()
+                    : message.sender.toString();
+
+            if (!latestMessages.has(otherUserId)) {
+                latestMessages.set(otherUserId, message);
+            }
+        }
+
+        // Chat wale users ki IDs
+        const userIds = [...latestMessages.keys()];
+
+        // Users ki details
+        const users = await User.find({
+            _id: { $in: userIds }
+        }).select("_id username dp");
+
+        // User + latest message combine
+        const chatUsers = users.map((user) => ({
+            _id: user._id,
+            username: user.username,
+            dp: user.dp,
+            lastMessage: latestMessages.get(user._id.toString())
+        }));
+
+        // Latest message ke according sort
+        chatUsers.sort(
+            (a, b) =>
+                new Date(b.lastMessage.createdAt) -
+                new Date(a.lastMessage.createdAt)
+        );
+
+        return res.status(200).json({
+            message: "Chat users fetched successfully",
+            users: chatUsers
+        });
+
+    } catch (error) {
+        console.error("Get chat users error:", error);
+
+        return res.status(500).json({
+            message: "Failed to fetch chat users"
+        });
+    }
 };
