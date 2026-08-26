@@ -234,12 +234,6 @@ const Reels = () => {
                   <span className="text-xs font-medium drop-shadow">{reel?.comments?.length || 0}</span>
                 </button>
 
-                {/* Share */}
-                <button className="flex flex-col items-center gap-1 text-white">
-                  <span className="w-11 h-11 rounded-full bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
-                    <Send size={21} />
-                  </span>
-                </button>
               </div>
 
               {/* Bottom Information */}

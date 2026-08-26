@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { data, Link, useNavigate } from "react-router";
 import axios from "axios";
 import toast from "react-hot-toast";
+import def from "../../public/default.png"
 import {
   Home as HomeIcon,
   Bookmark,
@@ -193,6 +194,33 @@ const Home = () => {
 
 
 
+  useEffect(() => {
+    const addView = async () => {
+        try {
+
+
+          for(const post of feedPosts){
+            const res =    await axios.get(
+              `${ServerURl}/api/view-post/${post._id}/view`,
+              {
+                  withCredentials: true
+              }
+          );
+
+          // console.log("this is view response",res)
+
+          }
+
+        } catch (error) {
+            console.log("View count error:", error);
+        }
+    };
+
+    addView();
+}, [feedPosts]);
+
+
+
 
 
 
@@ -223,7 +251,7 @@ const Home = () => {
           </Link>
           <Link to="/profile">
             <img
-              src={userData?.dp || "https://i.pravatar.cc/100"}
+              src={userData?.dp || def}
               alt="profile"
               className="w-8 h-8 rounded-full object-cover ring-2 ring-[#e1306c]"
             />
@@ -238,7 +266,7 @@ const Home = () => {
           {/* Mini profile card */}
           <div className="bg-[#1c1728] border border-white/10 rounded-2xl p-4 flex items-center gap-3">
             <img
-              src={userData?.dp || "https://i.pravatar.cc/100"}
+              src={userData?.dp || def}
               alt="profile"
               className="w-12 h-12 rounded-full object-cover"
             />
@@ -259,48 +287,43 @@ const Home = () => {
           <nav className="flex flex-col gap-1">
             <Link
               to="/"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 text-sm font-medium"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 text-sm font-medium cursor-pointer"
             >
               <HomeIcon size={18} /> Home
             </Link>
             <button
               onClick={() => setShowCreateMenu(true)}
-              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm text-left"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm text-left cursor-pointer"
             >
               <Plus size={18} /> Create
             </button>
             <Link
               to="/reels"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm cursor-pointer"
             >
               <Film size={18} /> Reels
             </Link>
             <Link
               to="/profile"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm cursor-pointer"
             >
               <img
-                src={userData?.dp}
+                src={userData?.dp || def}
                 alt=""
-                className="w-[18px] h-[18px] rounded-full object-cover"
+                className="w-[18px] h-[18px] rounded-full object-cover cursor-pointer"
               />
               Profile
             </Link>
             <Link
               to="/edit-profile"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm cursor-pointer"
             >
               <Settings size={18} /> Edit Profile
             </Link>
-            <Link
-              to="/saved"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm"
-            >
-              <Bookmark size={18} /> Saved
-            </Link>
+
             <Link
               to="/friend-list"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 text-sm cursor-pointer"
             >
               <MessageCircleCheck size={18} /> Messages
             </Link>
@@ -370,6 +393,10 @@ const Home = () => {
                 const alreadyLike = post?.likes.some(
                   (userId) => userId == userData?._id,
                 );
+
+
+
+
                 return (
                   <div
                     key={idx}
@@ -388,7 +415,10 @@ const Home = () => {
                           className="w-9 h-9 rounded-full object-cover border-2 border-[#1c1728]"
                         />
                       </div>
-                      <p className="text-sm font-semibold">{post?.author?.username}</p>
+                   <div>
+                   <p className="text-sm font-semibold">{post?.author?.username}</p>
+                   <p className="text-[12px]">{post?.views?.length || 0}  Views</p>
+                   </div>
                     </Link>
 
                     {/* Post image */}
@@ -444,7 +474,7 @@ const Home = () => {
 
 
 
-   <Bookmark />
+
 
                       {commentModelOpen === post?._id && (
                         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center">

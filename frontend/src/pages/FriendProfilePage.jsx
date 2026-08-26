@@ -95,7 +95,7 @@ const FriendProfilePage = () => {
   };
 
 
- 
+
 
   // ---------------------------------------
   // FRIEND REELS
@@ -284,12 +284,14 @@ const FriendProfilePage = () => {
 
 
 
-              <button >
-                <Link to={`/chat-page/${user?._id}`}>
-                Message
-                </Link>
-
-              </button>
+              <Link
+  to={`/chat-page/${user?._id}`}
+  className={`flex items-center gap-2 px-5 py-2 rounded-xl font-semibold text-sm transition
+    ${GRADIENT} text-[#17101c] hover:-translate-y-0.5`}
+>
+  <MessageCircle size={18} />
+  Message
+</Link>
 
             </div>
 

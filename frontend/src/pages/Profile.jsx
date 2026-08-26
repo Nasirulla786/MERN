@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 import toast from "react-hot-toast";
+import def from "../../public/default.png"
 
 import {
     Grid3x3,
@@ -281,7 +282,7 @@ const Profile = () => {
                         >
 
                             <img
-                                src={userData.dp || "/default-avatar.png"}
+                                src={userData.dp || def}
                                 alt={`${userData.username}'s avatar`}
                                 className="w-full h-full rounded-full object-cover border-4 border-[#120f1a]"
                             />
@@ -304,7 +305,7 @@ const Profile = () => {
 
                             <button
                                 onClick={() => navigate("/edit-profile")}
-                                className="px-5 py-2 rounded-xl font-semibold text-sm border border-white/15 hover:bg-white/5 transition"
+                                className="px-5 py-2 rounded-xl font-semibold text-sm border border-white/15 hover:bg-white/5 transition cursor-pointer"
                             >
                                 Edit Profile
                             </button>
