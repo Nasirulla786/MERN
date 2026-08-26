@@ -1,5 +1,5 @@
 import React from 'react'
-import RoutingProvider from './services/routingProvider'
+import RoutingProvider from './services/RoutingProvider'
 import { Toaster } from 'react-hot-toast'
 import useCurrentUser from './hooks/useCurrentUser'
 
