@@ -26,7 +26,7 @@ initializeSocket(server);
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173" ,"https://snapgram-5f9m.onrender.com"],
     credentials: true,
   }),
 );
