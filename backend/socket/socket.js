@@ -7,7 +7,7 @@ const onlineUsers = new Map();
 export const initializeSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: ["http://localhost:5173", "https://snapgram-5f9m.onrender.com"],
       credentials: true,
     },
   });
